@@ -18,11 +18,20 @@ public class EmployeeController {
             add(new Employee(2, "1111", 18, "女"));
             add(new Employee(3, "333", 18, "女"));
             add(new Employee(4, "444", 18, "女"));
+            add(new Employee(4, "444", 18, "女"));
+            add(new Employee(4, "444", 18, "女"));
+            add(new Employee(4, "444", 18, "女"));
         }
     };
+
     @GetMapping
-    public ResponseEntity<List<Employee>> queryEmpolyees(){
-            return ResponseEntity.ok(employees);
+    public ResponseEntity<List<Employee>> queryEmpolyees(@RequestParam(required = false) Integer page,@RequestParam(required = false) Integer pagesize){
+       if(page == null||pagesize == null){
+           return ResponseEntity.ok(employees);
+       }else {
+           List<Employee> list = employees.subList((page - 1) * pagesize, page * pagesize);
+           return ResponseEntity.ok(list);
+       }
      }
     @PostMapping(consumes = "application/json")
     public ResponseEntity<Employee> addEmployee(@RequestBody Employee e){
